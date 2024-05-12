@@ -2,8 +2,10 @@ import json
 import urllib.request as urllib2
 from bs4 import BeautifulSoup
 
+#google must be installed prior to googlesearch search
+
 def getWebPage(name):
-    try: 
+    try:
         from googlesearch import search 
     except ImportError:  
         print("No module named 'google' found") 
@@ -12,14 +14,13 @@ def getWebPage(name):
 
     for j in search(query, tld="co.in", num=10, stop=1, pause=2): 
         url = j
-
+    #print('url:',url)
     page = urllib2.urlopen(url)
+    
     soup = BeautifulSoup(page, 'html.parser')
     return soup
 
-def getStats(name):
-    soup = getWebPage(name)
-
+def getStats(soup):
     stats = []
 
     name = str(soup.h2.span.string).strip()
@@ -40,7 +41,7 @@ def getStats(name):
     jsonStats = json.dumps(statDictionary, indent=4) #create json object from python dictionary
     return jsonStats
 
-
-# soup = getWebPage("Jon Jones")
-# stats = getStats(soup)
-# print(stats)
+#Example:
+#soup = getWebPage("Myktybek Orolbai")
+#stats = getStats(soup)
+#print(stats)
